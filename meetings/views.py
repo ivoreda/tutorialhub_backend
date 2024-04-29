@@ -76,7 +76,7 @@ class GetAllTutorMeetingsView(APIView):
     def get(self, request):
         try:
             tutor_meetings = models.Meeting.objects.filter(tutor=request.user)
-            serializer = self.serializer_class(all_meetings, many=True)
+            serializer = self.serializer_class(tutor_meetings, many=True)
             return Response({"status": True, "message":"Data retrieved successfully", "data":serializer.data}, status=status.HTTP_200_OK)
         except models.Meeting.DoesNotExist:
             return Response({"status": False, "message": "Meetings not found"}, status=status.HTTP_404_NOT_FOUND)
