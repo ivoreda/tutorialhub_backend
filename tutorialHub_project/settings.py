@@ -174,8 +174,8 @@ EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
 
 
 SPECTACULAR_SETTINGS = {
-    'TITLE': 'TutorialHub API',
-    'DESCRIPTION': 'These APIs are for TutorialHub',
+    'TITLE': 'CIS 4509 Personal Tutor Application',
+    'DESCRIPTION':'CIS 4509 Personal Tutor Application: Group Members Include Amen Victor, Champion OvuaKnporie, Kenechukwu Nkwonta, Olakunle Afolabi, Babalola Opeyemi Daniel',
     'VERSION': '1.0.0',
     'SERVE_INCLUDE_SCHEMA': False,
     # OTHER SETTINGS
