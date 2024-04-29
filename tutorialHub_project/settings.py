@@ -14,6 +14,9 @@ from pathlib import Path
 import os
 from datetime import timedelta
 
+# from decouple import config
+
+
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
@@ -48,6 +51,7 @@ INSTALLED_APPS = [
     # 3rd party
     'rest_framework',
     'rest_framework_simplejwt',
+    'drf_spectacular',
 
 ]
 
@@ -158,4 +162,21 @@ SIMPLE_JWT = {
     "USER_ID_FIELD": "id",
     "USER_ID_CLAIM": "user_id",
     "TOKEN_OBTAIN_SERIALIZER": "users.serializers.CustomTokenGeneratorSerializer",
+}
+
+# Email config
+EMAIL_HOST = 'NEW_EMAIL_HOST'
+EMAIL_HOST_USER = 'NEW_EMAIL_HOST_USER'
+EMAIL_HOST_PASSWORD = 'NEW_EMAIL_HOST_PASSWORD'
+EMAIL_PORT = 'NEW_EMAIL_PORT'
+EMAIL_USE_TLS = 'NEW_EMAIL_USE_TLS'
+EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
+
+
+SPECTACULAR_SETTINGS = {
+    'TITLE': 'TutorialHub API',
+    'DESCRIPTION': 'These APIs are for TutorialHub',
+    'VERSION': '1.0.0',
+    'SERVE_INCLUDE_SCHEMA': False,
+    # OTHER SETTINGS
 }

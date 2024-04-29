@@ -12,5 +12,15 @@ urlpatterns = [
     path('refresh-token/', TokenRefreshView.as_view(), name='token_refresh'),
     path('signup/', views.SignUpView.as_view(), name='signup'),
     path('get-user/', views.GetUserView.as_view()),
+    path('get-tutors-tutees/', views.GetTutorsTuteesView.as_view()),
+    path('get-all-tutees/', views.AdminGetAllTuteesView.as_view()),
+    path('get-all-tutors/', views.AdminGetAllTutorsView.as_view()),
+    path('admin-dashboard/', views.AdminDashboardView.as_view()),
+    path('user-dashboard/', views.UserDashboardView.as_view()),
+
+
+
+
+
     # Add other URLs for your app here
 ]

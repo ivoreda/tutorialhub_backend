@@ -34,7 +34,7 @@ class SignupSerializer(serializers.ModelSerializer):
         instance = self.Meta.model(**validated_data)
         if password is not None:
             instance.set_password(password)
-        if user_type is not None and user_type not in ['Tutor', 'Tutee']:
+        if user_type is not None and user_type not in ['Tutor', 'Tutee', 'Admin']:
             raise serializers.ValidationError({'status': False, 'message': 'user_type should be either Tutor or Tutee'})
         instance.user_type = user_type
         instance.save()
@@ -53,24 +53,15 @@ class CustomTokenGeneratorSerializer(TokenObtainPairSerializer):
         token['user_type'] = user.user_type
         return token
 
-class TutorSerializer(serializers.ModelSerializer):
-    class Meta:
-        model = models.Tutor
-        fields = ['meetings_created', 'hours_spent']
-
-class TuteeSerializer(serializers.ModelSerializer):
-    class Meta:
-        model = models.Tutee
-        fields = ['tutee_performance', 'meetings_attended', 'hours_spent']
 
 class UserSerializer(serializers.ModelSerializer):
     tutor = serializers.SerializerMethodField()
     tutee = serializers.SerializerMethodField()
 
-
     class Meta:
         model = models.CustomUser
-        fields = ['id','first_name','last_name','user_type', 'email','gender', 'tutor', 'tutee']
+        fields = ['id','first_name','last_name','user_type', 'email','gender','is_staff',
+            'is_active', 'is_superuser', 'tutor', 'tutee']
 
     def get_tutor(self, obj):
         if obj.user_type == "Tutor":
@@ -82,8 +73,42 @@ class UserSerializer(serializers.ModelSerializer):
 
     def get_tutee(self, obj):
             if obj.user_type == "Tutee":
-                tutee = models.Tutee.object.filter(user=obj).first()
+                tutee = models.Tutee.objects.filter(user=obj).first()
                 if tutee:
                     return TuteeSerializer(tutee).data
                 return None
             return None
+
+
+class TutorSerializer(serializers.ModelSerializer):
+    user = serializers.SerializerMethodField()
+
+    class Meta:
+        model = models.Tutor
+        fields = ['user', 'meetings_created', 'hours_spent']
+
+    def get_user(self, obj):
+         user_serializer = SimplifiedUserSerializer(obj.user)
+         return user_serializer.data
+
+
+class SimplifiedUserSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = User
+        fields = ['id', 'email', 'first_name', 'last_name']
+
+class SimplifiedTutorSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = models.Tutor
+        fields = ['id', 'meetings_created', 'hours_spent']
+
+class TuteeSerializer(serializers.ModelSerializer):
+    user = serializers.SerializerMethodField()
+
+    class Meta:
+        model = models.Tutee
+        fields = ["user", "tutee_performance", "meetings_attended", "hours_spent"]
+
+    def get_user(self, obj):
+        user_serializer = SimplifiedUserSerializer(obj.user)
+        return user_serializer.data
